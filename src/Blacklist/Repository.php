@@ -33,13 +33,8 @@ class Repository extends AbstractApi implements RepositoryInterface
     {
         $uri = 'blacklist/monitors/';
 
-        if ($page === null) {
-            $uri .= '0/';
-        }
-
-        if ($per_page === null) {
-            $uri .= '100/';
-        }
+        $uri .= ($page === null) ? '0/' : $page . '/';
+        $uri .= ($per_page === null) ? '100/' : $per_page . '/';
 
         return AbstractApi::get($this->apiKey, 'v2', $uri);
     }
@@ -87,5 +82,14 @@ class Repository extends AbstractApi implements RepositoryInterface
         $uri = 'blacklist-check/' . $type . '/' . $target . '/';
 
         return AbstractApi::get($this->apiKey, 'v2', $uri);
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws \ErrorException
+     */
+    public function listContacts(): ResponseInterface
+    {
+        return AbstractApi::get($this->apiKey, 'v1', 'contacts/');
     }
 }

@@ -39,17 +39,12 @@ class Repository extends AbstractApi implements RepositoryInterface
      * @return ResponseInterface
      * @throws \ErrorException
      */
-    public function listUptimeMonitors(?int $page = null, ?int $per_page = null): ResponseInterface
+    public function listMonitors(?int $page = null, ?int $per_page = null): ResponseInterface
     {
         $uri = 'uptime/monitors/';
 
-        if ($page === null) {
-            $uri .= '0/';
-        }
-
-        if ($per_page === null) {
-            $uri .= '100/';
-        }
+        $uri .= ($page === null) ? '0/' : $page . '/';
+        $uri .= ($per_page === null) ? '100/' : $per_page . '/';
 
         return AbstractApi::get($this->apiKey, 'v1', $uri);
     }

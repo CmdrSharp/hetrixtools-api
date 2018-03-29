@@ -25,4 +25,9 @@ interface RepositoryInterface
      * @return ResponseInterface
      */
     public function manualCheck(String $target): ResponseInterface;
+
+    /**
+     * @return ResponseInterface
+     */
+    public function listContacts(): ResponseInterface;
 }
