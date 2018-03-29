@@ -492,11 +492,11 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * @param array $response
+     * @param \stdClass $response
      * @return bool
      * @throws \ErrorException
      */
-    private function validateResponseContents(array $response)
+    private function validateResponseContents(\stdClass $response)
     {
         if (!$response) {
             throw new \ErrorException('Remote API Procedure failed. Cause: Unknown');
