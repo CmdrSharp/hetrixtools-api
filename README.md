@@ -62,8 +62,8 @@ use CmdrSharp\HetrixtoolsApi\Uptime\Repository as HetrixTools;
 $instance = new HetrixTools('myApiKey');
 
 try {
-	$result = $instance->listUptimeMonitors(); // Fetches all
-	$result = $instance->listUptimeMonitors(1, 500); // Page 1, 500 results per page.
+	$result = $instance->listUptimeMonitors(); // Fetches 100 results
+	$result = $instance->listUptimeMonitors(0, 50); // Page 0, 50 results per page.
 } catch(\Exception $e) {
 	print($e->getMessage());
 }

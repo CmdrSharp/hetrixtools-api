@@ -53,22 +53,13 @@ abstract class AbstractApi
 
         switch ($method) {
             case 'post':
-                $request = [
-                    $type => $post,
-                    'headers' => [
-                        'Content-Type' => 'application/json'
-                    ]
-                ];
-
-                $response = $client->request('POST', $uri, $request);
+                $response = $client->request('POST', $uri, [
+                    $type => $post
+                ]);
                 break;
 
             case 'get':
-                $response = $client->request('GET', $uri, [
-                    'headers' => [
-                        'Content-Type' => 'application/json'
-                    ]
-                ]);
+                $response = $client->request('GET', $uri);
                 break;
 
             default:
@@ -97,17 +88,25 @@ abstract class AbstractApi
     }
 
     /**
-     * @param \stdClass $response
+     * @param $response
      * @return bool
      * @throws \ErrorException
      */
-    private static function validateResponseContents(\stdClass $response)
+    private static function validateResponseContents($response)
     {
-        if (!isset($response->status) || $response->status === 'ERROR') {
-            $message = isset($response->error_message) ? $response->error_message : 'Unknown';
-            throw new \ErrorException('Remote API Procedure failed. Cause: ' . $message);
+        if (is_array($response)) {
+            return true;
         }
 
-        return true;
+        if (is_object($response)) {
+            if (isset($response->status) && $response->status === 'ERROR') {
+                $message = isset($response->error_message) ? $response->error_message : 'Unknown';
+                throw new \ErrorException('Remote API Procedure failed. Cause: ' . $message);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

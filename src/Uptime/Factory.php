@@ -387,8 +387,6 @@ class Factory extends AbstractApi implements FactoryInterface
             return false;
         }, ARRAY_FILTER_USE_BOTH);
 
-        $locations = array_unique($locations);
-
         if (count($locations) < 3) {
             throw new \InvalidArgumentException('Invalid locations specified. Number of locations must be 3 or more.');
         }

@@ -43,12 +43,12 @@ class Repository extends AbstractApi implements RepositoryInterface
     {
         $uri = 'uptime/monitors/';
 
-        if ($page !== null) {
-            $uri .= $page . '/';
+        if ($page === null) {
+            $uri .= '0/';
         }
 
-        if ($per_page !== null) {
-            $uri .= $per_page . '/';
+        if ($per_page === null) {
+            $uri .= '100/';
         }
 
         return AbstractApi::get($this->apiKey, 'v1', $uri);
@@ -61,7 +61,7 @@ class Repository extends AbstractApi implements RepositoryInterface
      */
     public function uptimeReport(String $id): ResponseInterface
     {
-        return AbstractApi::get($this->apiKey, 'v1', 'uptime/report/' . $id);
+        return AbstractApi::get($this->apiKey, 'v1', 'uptime/report/' . $id . '/');
     }
 
     /**
