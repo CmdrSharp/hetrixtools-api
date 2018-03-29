@@ -17,9 +17,9 @@ abstract class AbstractApi
      * @return mixed
      * @throws \ErrorException
      */
-    public static function post(String $apiKey, String $api, String $uri, array $post)
+    public static function post(String $apiKey, String $api, String $uri, String $type, array $post)
     {
-        return self::request($apiKey, $api, 'post', $uri, $post);
+        return self::request($apiKey, $api, 'post', $uri, $type, $post);
     }
 
     /**
@@ -31,9 +31,9 @@ abstract class AbstractApi
      * @return mixed
      * @throws \ErrorException
      */
-    public static function get(String $apiKey, String $api, String $uri)
+    public static function get(String $apiKey, String $api, String $uri, String $type = 'json')
     {
-        return self::request($apiKey, $api, 'get', $uri);
+        return self::request($apiKey, $api, 'get', $uri, $type);
     }
 
     /**
@@ -47,14 +47,14 @@ abstract class AbstractApi
      * @return mixed
      * @throws \ErrorException
      */
-    protected static function request(String $apiKey, String $api, String $method, String $uri, ?array $post = null)
+    protected static function request(String $apiKey, String $api, String $method, String $uri, String $type = 'json', ?array $post = null)
     {
         $client = new Client(['base_uri' => 'https://api.hetrixtools.com/' . $api . '/' . $apiKey . '/']);
 
         switch ($method) {
             case 'post':
                 $request = [
-                    'json' => $post,
+                    $type => $post,
                     'headers' => [
                         'Content-Type' => 'application/json'
                     ]

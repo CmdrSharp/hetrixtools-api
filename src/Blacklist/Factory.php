@@ -34,7 +34,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function create(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/add/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/add/', 'form_params', $this->post);
     }
 
     /**
@@ -45,7 +45,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function patch(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/edit/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/edit/', 'form_params', $this->post);
     }
 
     /**
@@ -56,7 +56,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function delete(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/delete/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/delete/', 'form_params', $this->post);
     }
 
     /**
@@ -98,10 +98,10 @@ class Factory extends AbstractApi implements FactoryInterface
     /**
      * Set the contact
      *
-     * @param int|null $contact
+     * @param String $contact
      * @return FactoryInterface
      */
-    public function contact(?int $contact = null): FactoryInterface
+    public function contact(String $contact): FactoryInterface
     {
         $this->post['contact'] = $contact;
 

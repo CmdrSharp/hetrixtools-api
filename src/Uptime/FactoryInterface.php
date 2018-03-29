@@ -83,10 +83,10 @@ interface FactoryInterface
     public function failedLocations(?int $failed = null): FactoryInterface;
 
     /**
-     * @param int|null $contactList
+     * @param String|null $contactList
      * @return FactoryInterface
      */
-    public function contactList(?int $contactList = null): FactoryInterface;
+    public function contactList(?String $contactList = null): FactoryInterface;
 
     /**
      * @param null|String $category

@@ -42,8 +42,8 @@ interface FactoryInterface
     public function label(String $label): FactoryInterface;
 
     /**
-     * @param int|null $contactList
+     * @param String $contactList
      * @return FactoryInterface
      */
-    public function contact(?int $contactList = null): FactoryInterface;
+    public function contact(String $contactList): FactoryInterface;
 }
