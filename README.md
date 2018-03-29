@@ -89,8 +89,8 @@ failedLocations(int $failed);
 contactList(int $contactList);
 category(String $category);
 alertAfter(int $time);
-repeatTimes($int $times);
-repeatEvery($int $every);
+repeatTimes(int $times);
+repeatEvery(int $every);
 public(bool $public);
 showTarget(bool $show);
 verify_ssl_certificate(bool $verify);
@@ -101,7 +101,7 @@ maxRedirects(int $redirects);
 port(int $port);
 checkAuth(bool $check);
 smtpUser(String $user);
-smtpPass(string $pass);
+smtpPass(String $pass);
 ```
 
 # Errors
