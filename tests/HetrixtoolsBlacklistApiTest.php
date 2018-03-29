@@ -1,16 +1,21 @@
 <?php
 
 use CmdrSharp\HetrixtoolsApi\Blacklist\Factory as HetrixFactory;
+use CmdrSharp\HetrixtoolsApi\Blacklist\Repository as HetrixRepository;
 use PHPUnit\Framework\TestCase;
 
 class HetrixtoolsBlacklistApiTest extends TestCase
 {
     /** @var HetrixFactory */
-    protected $hetrix;
+    protected $hetrixFactory;
+
+    /** @var HetrixRepository */
+    protected $hetrixRepository;
 
     public function setUp()
     {
-        $this->hetrix = new HetrixFactory('testKey');
+        $this->hetrixFactory = new HetrixFactory('testKey');
+        $this->hetrixRepository = new HetrixRepository('testKey');
     }
 
     /** @test */
@@ -18,7 +23,7 @@ class HetrixtoolsBlacklistApiTest extends TestCase
     {
         $this->expectException(\ErrorException::class);
 
-        $this->hetrix->create();
+        $this->hetrixFactory->create();
     }
 
     /** @test */
@@ -26,18 +31,18 @@ class HetrixtoolsBlacklistApiTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->hetrix->target('0.0.0.0/512');
-        $this->hetrix->target('http://google.com');
-        $this->hetrix->target('512.512.512.512');
+        $this->hetrixFactory->target('0.0.0.0/512');
+        $this->hetrixFactory->target('http://google.com');
+        $this->hetrixFactory->target('512.512.512.512');
     }
 
     /** @test */
     public function a_valid_target_works()
     {
-        $this->hetrix->target('8.8.8.8');
-        $this->hetrix->target('foobar.com');
-        $this->hetrix->target('server1.foobar.com');
-        $this->hetrix->target('192.168.0.1/24');
+        $this->hetrixFactory->target('8.8.8.8');
+        $this->hetrixFactory->target('foobar.com');
+        $this->hetrixFactory->target('server1.foobar.com');
+        $this->hetrixFactory->target('192.168.0.1/24');
 
         $this->assertTrue(true);
     }
@@ -47,13 +52,13 @@ class HetrixtoolsBlacklistApiTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->hetrix->label('Foo^bar#bit%bot');
+        $this->hetrixFactory->label('Foo^bar#bit%bot');
     }
 
     /** @test */
     public function a_valid_label_works()
     {
-        $this->hetrix->label('AZaz0-9 .-');
+        $this->hetrixFactory->label('AZaz0-9 .-');
 
         $this->assertTrue(true);
     }
@@ -61,9 +66,35 @@ class HetrixtoolsBlacklistApiTest extends TestCase
     /** @test */
     public function a_valid_contact_works()
     {
-        $this->hetrix->contact(0);
-        $this->hetrix->contact('0');
+        $this->hetrixFactory->contact(0);
+        $this->hetrixFactory->contact('0');
 
         $this->assertTrue(true);
+    }
+
+    /** @test */
+    public function an_invalid_blacklist_report_throws_exception()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->hetrixRepository->blacklistReport('foobar');
+    }
+
+    /** @test */
+    public function an_invalid_date_in_blacklist_report_throws_exception()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->hetrixRepository->blacklistReport('server.foobar.com', 'yyyy-mm-dd');
+        $this->hetrixRepository->blacklistReport('server.foobar.com', '2018-05-55');
+    }
+
+    /** @test */
+    public function a_manual_blacklist_check_throws_exception_if_not_ip_or_hostname()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->hetrixRepository->manualCheck('foobar');
+        $this->hetrixRepository->manualCheck('152.000.1900.1');
     }
 }

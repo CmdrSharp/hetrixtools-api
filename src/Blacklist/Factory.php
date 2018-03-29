@@ -34,7 +34,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function create(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'blacklist/add/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/add/', $this->post);
     }
 
     /**
@@ -45,7 +45,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function patch(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'blacklist/edit/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/edit/', $this->post);
     }
 
     /**
@@ -56,7 +56,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function delete(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'blacklist/delete/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'blacklist/delete/', $this->post);
     }
 
     /**

@@ -35,7 +35,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function create(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'uptime/add/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'uptime/add/', $this->post);
     }
 
     /**
@@ -46,7 +46,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function patch(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'uptime/edit/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'uptime/edit/', $this->post);
     }
 
     /**
@@ -57,7 +57,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function delete(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'uptime/delete/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'uptime/delete/', $this->post);
     }
 
     /**

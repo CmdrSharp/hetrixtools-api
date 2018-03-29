@@ -4,7 +4,7 @@
 [![StyleCI](https://styleci.io/repos/127169208/shield?branch=master)](https://styleci.io/repos/127169208)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-This is an API for HetrixTools V2 API, aiming to make dealing with creating/updating and deleting monitors easier and more fluent.
+This is an API for HetrixTools V2 API, aiming to make dealing with creating/updating/deleting/fetching Uptime and RBL Monitors easier and more fluent.
 
 # Requirements
 * PHP 7.1 or higher
@@ -16,7 +16,8 @@ $ composer require cmdrsharp/hetrixtools-api
 ```
 
 # Usage
-Include the factory that you need (either Uptime or Blacklist), then spawn up an instance of the class, supplying your API Key as the only argument. Finally, build out your request.
+Include the `factory` or `repository` that you need (either Uptime or Blacklist), then spawn up an instance of the class, supplying your API Key as the only argument. Finally, build out your request.
+A full list of available methods for both the factories and repositories are available further down in this readme.
 ```php
 // Example Uptime Monitor creation (adding a ping monitor to 8.8.8.8)
 use CmdrSharp\HetrixtoolsApi\Uptime\Factory as HetrixTools;
@@ -51,6 +52,30 @@ try {
 	    ->label('Blacklist Monitor 1')
 	    ->contact(1)
 	    ->create();
+} catch(\Exception $e) {
+	print($e->getMessage());
+}
+
+// Example Listing Uptime Monitors
+use CmdrSharp\HetrixtoolsApi\Uptime\Repository as HetrixTools;
+
+$instance = new HetrixTools('myApiKey');
+
+try {
+	$result = $instance->listUptimeMonitors(); // Fetches all
+	$result = $instance->listUptimeMonitors(1, 500); // Page 1, 500 results per page.
+} catch(\Exception $e) {
+	print($e->getMessage());
+}
+
+// Example Blacklist Report
+use CmdrSharp\HetrixtoolsApi\Blacklist\Repository as HetrixTools;
+
+$instance = new HetrixTools('myApiKey');
+
+try {
+	$result = $instance->blacklistReport('8.8.8.8');
+	$result = $instance->blacklistReport('8.8.8.8', '2018-03-29');
 } catch(\Exception $e) {
 	print($e->getMessage());
 }
@@ -108,7 +133,7 @@ patch();
 delete();
 target(String $target);
 
-// Uptime Monitoring Methods
+// FACTORY: Uptime Monitoring Methods
 id(String $id);
 type(String $type);
 name(String $name);
@@ -133,9 +158,20 @@ checkAuth(bool $check);
 smtpUser(String $user);
 smtpPass(String $pass);
 
-// Blacklist Monitoring Methods
+// REPOSITORY: Uptime Monitoring Methods
+status();
+listUptimeMonitors(?int $page = null, ?int $per_page = null);
+uptimeReport(String $id);
+listContacts();
+
+// FACTORY: Blacklist Monitoring Methods
 label(String $label);
 contact(int $contact);
+
+// REPOSITORY: Blacklist Monitoring Methods
+listMonitors(?int $page = null, ?int $per_page = null);
+blacklistReport(String $target, ?String $date = null);
+manualCheck(String $target);
 ```
 
 # Errors

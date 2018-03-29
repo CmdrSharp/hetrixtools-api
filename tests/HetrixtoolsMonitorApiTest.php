@@ -300,4 +300,12 @@ class HetrixtoolsMonitorApiTest extends TestCase
 
         $this->assertTrue(true);
     }
+
+    /** @test */
+    public function an_invalid_maintenance_mode_throws_exception()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->hetrix->maintenance('foobar', -1);
+    }
 }

@@ -69,4 +69,17 @@ trait Validator
     {
         return filter_var($input, FILTER_VALIDATE_URL) ? true : false;
     }
+
+    /**
+     * Validates a specified date to follow the YYYY-MM-DD format.
+     *
+     * @param String $date
+     * @return bool
+     */
+    public function isValidDate(String $date)
+    {
+        return preg_match("/^(\d{4})-(\d{1,2})-(\d{1,2})$/", $date, $m)
+            ? checkdate(intval($m[2]), intval($m[3]), intval($m[1]))
+            : false;
+    }
 }
