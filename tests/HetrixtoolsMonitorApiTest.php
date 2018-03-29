@@ -1,11 +1,11 @@
 <?php
 
-use CmdrSharp\HetrixtoolsApi\Factory as HetrixFactory;
+use CmdrSharp\HetrixtoolsApi\Uptime\Factory as HetrixFactory;
 use PHPUnit\Framework\TestCase;
 
-class HetrixtoolsApiTest extends TestCase
+class HetrixtoolsMonitorApiTest extends TestCase
 {
-    /** @var GuzzleClient */
+    /** @var HetrixFactory */
     protected $hetrix;
 
     public function setUp()
@@ -14,19 +14,11 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    public function an_invalid_method_throws_exception()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->hetrix->name('Test')->call('invalid');
-    }
-
-    /** @test */
-    public function an_invalid_post_throws_exception()
+    public function an_invalid_create_throws_exception()
     {
         $this->expectException(\ErrorException::class);
 
-        $this->hetrix->name('Test')->call('POST');
+        $this->hetrix->name('Test')->create();
     }
 
     /** @test */

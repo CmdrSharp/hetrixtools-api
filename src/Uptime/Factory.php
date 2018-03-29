@@ -1,13 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace CmdrSharp\HetrixtoolsApi;
+namespace CmdrSharp\HetrixtoolsApi\Uptime;
 
+use CmdrSharp\HetrixtoolsApi\Traits\Validator;
+use CmdrSharp\HetrixtoolsApi\AbstractApi;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Client;
 
-class Factory implements FactoryInterface
+class Factory extends AbstractApi implements FactoryInterface
 {
+    use Validator;
+
     /** @var string */
     private $apiKey;
 
@@ -16,6 +19,7 @@ class Factory implements FactoryInterface
 
     /**
      * Factory constructor.
+     *
      * @param String $apiKey
      */
     public function __construct(String $apiKey)
@@ -24,44 +28,36 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * Create, Update or Delete a monitor.
+     * Create an Uptime Monitor
      *
-     * @param String $method
      * @return ResponseInterface
      * @throws \ErrorException
      */
-    public function call(String $method = 'POST'): ResponseInterface
+    public function create(): ResponseInterface
     {
-        $client = new Client(['base_uri' => 'https://api.hetrixtools.com/v2/' . $this->apiKey . '/']);
-        $request = [
-            'json' => $this->post,
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ]
-        ];
+        return AbstractApi::request($this->apiKey, 'uptime/add/', $this->post);
+    }
 
-        switch (strtolower($method)) {
-            case 'post':
-                $response = $client->request('POST', 'uptime/add/', $request);
-                break;
+    /**
+     * Edit an Uptime Monitor
+     *
+     * @return ResponseInterface
+     * @throws \ErrorException
+     */
+    public function patch(): ResponseInterface
+    {
+        return AbstractApi::request($this->apiKey, 'uptime/edit/', $this->post);
+    }
 
-            case 'patch':
-                $response = $client->request('POST', 'uptime/edit/', $request);
-                break;
-
-            case 'delete':
-                $response = $client->request('POST', 'uptime/delete/', $request);
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Invalid method call (POST/PATCH/DELETE)');
-        }
-
-        if ($this->validateResponse($response)) {
-            return $response;
-        } else {
-            throw new \ErrorException('An error has occurred: The response was likely not of the expected type.');
-        }
+    /**
+     * Delete an Uptime Monitor
+     *
+     * @return ResponseInterface
+     * @throws \ErrorException
+     */
+    public function delete(): ResponseInterface
+    {
+        return AbstractApi::request($this->apiKey, 'uptime/delete/', $this->post);
     }
 
     /**
@@ -129,14 +125,7 @@ class Factory implements FactoryInterface
      */
     public function target(String $target): FactoryInterface
     {
-        $isValidIP = filter_var($target, FILTER_VALIDATE_IP);
-        $isValidURL = filter_var($target, FILTER_VALIDATE_URL);
-        $isValidHostname = preg_match(
-            '/(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}$)/',
-            $target
-        );
-
-        if (!$isValidIP && !$isValidHostname && !$isValidURL) {
+        if (!$this->isValidHostname($target) && !$this->isValidIp($target) && !$this->isValidUrl($target)) {
             throw new \InvalidArgumentException('Invalid target specified. Targets can be either a URL, a Hostname or an IP Address');
         }
 
@@ -477,34 +466,5 @@ class Factory implements FactoryInterface
         $this->post['SMTPPass'] = $pass;
 
         return $this;
-    }
-
-    /**
-     * @param $response
-     * @return bool
-     * @throws \ErrorException
-     */
-    private function validateResponse($response)
-    {
-        if (!$response instanceof ResponseInterface) {
-            throw new \ErrorException('Response is not an instance of ResponseInterface');
-        }
-
-        return $this->validateResponseContents(json_decode((string)$response->getBody()));
-    }
-
-    /**
-     * @param \stdClass $response
-     * @return bool
-     * @throws \ErrorException
-     */
-    private function validateResponseContents(\stdClass $response)
-    {
-        if (!isset($response->status) || $response->status === 'ERROR') {
-            $message = isset($response->error_message) ? $response->error_message : 'Unknown';
-            throw new \ErrorException('Remote API Procedure failed. Cause: ' . $message);
-        }
-
-        return true;
     }
 }

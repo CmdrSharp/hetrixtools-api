@@ -1,18 +1,31 @@
 <?php
 
-namespace CmdrSharp\HetrixtoolsApi;
+namespace CmdrSharp\HetrixtoolsApi\Uptime;
 
 use Psr\Http\Message\ResponseInterface;
 
 interface FactoryInterface
 {
     /**
-     * @param String $method
      * @return ResponseInterface
      * @throws \ErrorException
      * @throws \InvalidArgumentException
      */
-    public function call(String $method = 'POST'): ResponseInterface;
+    public function create(): ResponseInterface;
+
+    /**
+     * @return ResponseInterface
+     * @throws \ErrorException
+     * @throws \InvalidArgumentException
+     */
+    public function patch(): ResponseInterface;
+
+    /**
+     * @return ResponseInterface
+     * @throws \ErrorException
+     * @throws \InvalidArgumentException
+     */
+    public function delete(): ResponseInterface;
 
     /**
      * @param String $id
