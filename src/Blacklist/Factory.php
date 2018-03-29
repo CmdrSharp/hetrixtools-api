@@ -107,5 +107,4 @@ class Factory extends AbstractApi implements FactoryInterface
 
         return $this;
     }
-
 }
