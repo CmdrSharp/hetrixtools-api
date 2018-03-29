@@ -62,7 +62,6 @@ class Factory implements FactoryInterface
         } else {
             throw new \ErrorException('An error has occurred: The response was likely not of the expected type.');
         }
-
     }
 
     /**

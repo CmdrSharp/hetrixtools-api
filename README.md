@@ -1,6 +1,7 @@
 # About
 [![Latest Stable Version](https://poser.pugx.org/cmdrsharp/hetrixtools-api/v/stable)](https://packagist.org/packages/cmdrsharp/hetrixtools-api)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CmdrSharp/hetrixtools-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CmdrSharp/hetrixtools-api/?branch=master)
+[![Build Status](https://travis-ci.org/CmdrSharp/hetrixtools-api.svg?branch=master)](https://travis-ci.org/CmdrSharp/hetrixtools-api)
+[![StyleCI](https://styleci.io/repos/127169208/shield?branch=master)](https://styleci.io/repos/127169208)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 This is an API for HetrixTools V2 API, aiming to make dealing with creating/updating and deleting monitors easier and more fluent.
