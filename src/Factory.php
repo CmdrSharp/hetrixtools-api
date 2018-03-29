@@ -387,7 +387,6 @@ class Factory implements FactoryInterface
                 return true;
             }
             return false;
-
         }, ARRAY_FILTER_USE_BOTH);
 
         $locations = array_unique($locations);

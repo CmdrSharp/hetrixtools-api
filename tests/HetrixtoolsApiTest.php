@@ -14,7 +14,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_method_throws_exception()
+    public function an_invalid_method_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -22,7 +22,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_post_throws_exception()
+    public function an_invalid_post_throws_exception()
     {
         $this->expectException(\ErrorException::class);
 
@@ -30,7 +30,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_type_throws_exception()
+    public function an_invalid_type_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -38,7 +38,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_type_works()
+    public function a_valid_type_works()
     {
         $this->hetrix->type('website');
         $this->hetrix->type('ping');
@@ -49,7 +49,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_name_throws_exception()
+    public function an_invalid_name_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -57,7 +57,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_name_works()
+    public function a_valid_name_works()
     {
         $this->hetrix->name('Foobar Monitor 123 - Foobar.com');
 
@@ -65,7 +65,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_target_throws_exception()
+    public function an_invalid_target_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -76,7 +76,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_target_works()
+    public function a_valid_target_works()
     {
         $examples = [
             'foobar.com',
@@ -100,7 +100,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_timeout_throws_exception()
+    public function an_invalid_timeout_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -108,7 +108,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_timeout_works()
+    public function a_valid_timeout_works()
     {
         $this->hetrix->timeout(3);
         $this->hetrix->timeout(5);
@@ -118,7 +118,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_frequency_throws_exception()
+    public function an_invalid_frequency_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -126,7 +126,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_frequency_works()
+    public function a_valid_frequency_works()
     {
         $this->hetrix->frequency(1);
         $this->hetrix->frequency(3);
@@ -137,7 +137,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_fails_before_alert_throws_exception()
+    public function an_invalid_fails_before_alert_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -145,7 +145,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_fails_before_alert_works()
+    public function a_valid_fails_before_alert_works()
     {
         $this->hetrix->failsBeforeAlert(1);
         $this->hetrix->failsBeforeAlert(2);
@@ -155,7 +155,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_failed_locations_throws_exception()
+    public function an_invalid_failed_locations_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -163,7 +163,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_failed_locations_works()
+    public function a_valid_failed_locations_works()
     {
         for ($i = 2; $i < 12; $i++) {
             $this->hetrix->failedLocations($i);
@@ -173,7 +173,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_alert_after_throws_exception()
+    public function an_invalid_alert_after_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -182,7 +182,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_alert_after_works()
+    public function a_valid_alert_after_works()
     {
         for ($i = 1; $i < 10; $i++) {
             $this->hetrix->alertAfter($i);
@@ -199,7 +199,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_repeat_times_throws_exception()
+    public function an_invalid_repeat_times_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -208,7 +208,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_repeat_times_works()
+    public function a_valid_repeat_times_works()
     {
         for ($i = 0; $i < 30; $i++) {
             $this->hetrix->repeatTimes($i);
@@ -218,7 +218,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_repeat_every_throws_exception()
+    public function an_invalid_repeat_every_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -226,7 +226,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_repeat_every_works()
+    public function a_valid_repeat_every_works()
     {
         for ($i = 1; $i < 10; $i++) {
             $this->hetrix->repeatEvery($i);
@@ -243,7 +243,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_locations_throws_exception()
+    public function an_invalid_locations_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -260,7 +260,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_locations_works()
+    public function a_valid_locations_works()
     {
         $this->hetrix->locations([
             'nyc',
@@ -272,7 +272,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_max_redirects_throws_exception()
+    public function an_invalid_max_redirects_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -281,7 +281,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_max_redirects_works()
+    public function a_valid_max_redirects_works()
     {
         for ($i = 0; $i < 10; $i++) {
             $this->hetrix->maxRedirects($i);
@@ -291,7 +291,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function an_invalid_port_throws_exception()
+    public function an_invalid_port_throws_exception()
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -300,7 +300,7 @@ class HetrixtoolsApiTest extends TestCase
     }
 
     /** @test */
-    function a_valid_port_works()
+    public function a_valid_port_works()
     {
         for ($i = 0; $i < 65535; $i++) {
             $this->hetrix->port($i);
