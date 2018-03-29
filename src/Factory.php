@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace CmdrSharp\HetrixtoolsApi;
 
@@ -33,7 +33,7 @@ class Factory implements FactoryInterface
      */
     public function call(String $method = 'POST'): ResponseInterface
     {
-        $client = new Client(['base_uri' => 'https://api.hetrixtools.com/v2/' . $this->apiKey . '/']);
+        $client = new Client(['base_uri' => 'https://api.hetrixtools.com/v2/'.$this->apiKey.'/']);
         $request = [
             'json' => $this->post,
             'headers' => [
@@ -62,12 +62,12 @@ class Factory implements FactoryInterface
             throw new \ErrorException('Response is not an instance of ResponseInterface');
         }
 
-        $response_body = json_decode((string)$response->getBody());
+        $response_body = json_decode((string) $response->getBody());
 
         if (!$response_body || !isset($response_body->status) || $response_body->status === 'ERROR') {
             $message = isset($response_body->error_message) ? $response_body->error_message : 'Unknown';
 
-            throw new \ErrorException('Remote API Procedure failed. Cause: ' . $message);
+            throw new \ErrorException('Remote API Procedure failed. Cause: '.$message);
         }
 
         return $response;
@@ -367,7 +367,7 @@ class Factory implements FactoryInterface
      */
     public function locations(array $locations): FactoryInterface
     {
-        array_filter($locations, function ($key, $value) {
+        array_filter($locations, function($key, $value) {
             $available_locations = [
                 'nyc',
                 'sfo',
