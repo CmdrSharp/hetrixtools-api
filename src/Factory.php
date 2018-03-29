@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace CmdrSharp\HetrixtoolsApi;
 
@@ -24,16 +24,15 @@ class Factory implements FactoryInterface
     }
 
     /**
-     * Create a new monitor
+     * Create, Update or Delete a monitor.
      *
      * @param String $method
      * @return ResponseInterface
      * @throws \ErrorException
-     * @throws \InvalidArgumentException
      */
     public function call(String $method = 'POST'): ResponseInterface
     {
-        $client = new Client(['base_uri' => 'https://api.hetrixtools.com/v2/'.$this->apiKey.'/']);
+        $client = new Client(['base_uri' => 'https://api.hetrixtools.com/v2/' . $this->apiKey . '/']);
         $request = [
             'json' => $this->post,
             'headers' => [
@@ -58,19 +57,9 @@ class Factory implements FactoryInterface
                 throw new \InvalidArgumentException('Invalid method call (POST/PATCH/DELETE)');
         }
 
-        if (!$response instanceof ResponseInterface) {
-            throw new \ErrorException('Response is not an instance of ResponseInterface');
+        if ($this->validateResponse($response)) {
+            return $response;
         }
-
-        $response_body = json_decode((string) $response->getBody());
-
-        if (!$response_body || !isset($response_body->status) || $response_body->status === 'ERROR') {
-            $message = isset($response_body->error_message) ? $response_body->error_message : 'Unknown';
-
-            throw new \ErrorException('Remote API Procedure failed. Cause: '.$message);
-        }
-
-        return $response;
     }
 
     /**
@@ -367,7 +356,7 @@ class Factory implements FactoryInterface
      */
     public function locations(array $locations): FactoryInterface
     {
-        array_filter($locations, function($key, $value) {
+        array_filter($locations, function ($key, $value) {
             $available_locations = [
                 'nyc',
                 'sfo',
@@ -393,7 +382,6 @@ class Factory implements FactoryInterface
 
         if (count($locations) < 3) {
             throw new \InvalidArgumentException('Invalid locations specified. Number of locations must be 3 or more.');
-            return $this;
         }
 
         $this->post['Locations'] = $locations;
@@ -487,5 +475,38 @@ class Factory implements FactoryInterface
         $this->post['SMTPPass'] = $pass;
 
         return $this;
+    }
+
+    /**
+     * @param $response
+     * @return bool
+     * @throws \ErrorException
+     */
+    private function validateResponse($response)
+    {
+        if (!$response instanceof ResponseInterface) {
+            throw new \ErrorException('Response is not an instance of ResponseInterface');
+        }
+
+        return $this->validateResponseContents(json_decode((string)$response->getBody()));
+    }
+
+    /**
+     * @param array $response
+     * @return bool
+     * @throws \ErrorException
+     */
+    private function validateResponseContents(array $response)
+    {
+        if (!$response) {
+            throw new \ErrorException('Remote API Procedure failed. Cause: Unknown');
+        }
+
+        if (!isset($response->status) || $response->status === 'ERROR') {
+            $message = isset($response_body->error_message) ? $response->error_message : 'Unknown';
+            throw new \ErrorException('Remote API Procedure failed. Cause: ' . $message);
+        }
+
+        return true;
     }
 }

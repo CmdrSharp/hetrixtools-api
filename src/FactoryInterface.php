@@ -16,7 +16,7 @@ interface FactoryInterface
 
     /**
      * @param String $id
-     * @return FactoryInterfaceInterface
+     * @return FactoryInterface
      */
     public function id(String $id): FactoryInterface;
 
