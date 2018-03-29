@@ -1,0 +1,30 @@
+{
+  "name": "cmdrsharp/hetrixtools-api",
+  "description": "A wrapper for creating, updating and deleting HetrixTools Monitors.",
+  "type": "libr",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.1",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.0"
+  },
+  "prefer-stable": true,
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "CmdrSharp\\HetrixtoolsApi\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CmdrSharp\\HetrixtoolsApi\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  }
+}
