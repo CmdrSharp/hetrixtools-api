@@ -16,7 +16,7 @@ abstract class AbstractApi
      * @return mixed
      * @throws \ErrorException
      */
-    static public function request(String $apiKey, String $uri, array $post)
+    public static function request(String $apiKey, String $uri, array $post)
     {
         $client = new Client(['base_uri' => 'https://api.hetrixtools.com/v2/' . $apiKey . '/']);
         $request = [
@@ -40,7 +40,7 @@ abstract class AbstractApi
      * @return bool
      * @throws \ErrorException
      */
-    static private function validateResponse($response)
+    private static function validateResponse($response)
     {
         if (!$response instanceof ResponseInterface) {
             throw new \ErrorException('Response is not an instance of ResponseInterface');
@@ -54,7 +54,7 @@ abstract class AbstractApi
      * @return bool
      * @throws \ErrorException
      */
-    static private function validateResponseContents(\stdClass $response)
+    private static function validateResponseContents(\stdClass $response)
     {
         if (!isset($response->status) || $response->status === 'ERROR') {
             $message = isset($response->error_message) ? $response->error_message : 'Unknown';
