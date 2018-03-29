@@ -35,7 +35,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function create(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'v2', 'uptime/add/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'uptime/add/', 'json', $this->post);
     }
 
     /**
@@ -46,7 +46,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function patch(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'v2', 'uptime/edit/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'uptime/edit/', 'json', $this->post);
     }
 
     /**
@@ -57,7 +57,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function delete(): ResponseInterface
     {
-        return AbstractApi::post($this->apiKey, 'v2', 'uptime/delete/', $this->post);
+        return AbstractApi::post($this->apiKey, 'v2', 'uptime/delete/', 'json', $this->post);
     }
 
     /**
@@ -227,10 +227,10 @@ class Factory extends AbstractApi implements FactoryInterface
     /**
      * Set the contact list
      *
-     * @param int|null $contactList
+     * @param String|null $contactList
      * @return FactoryInterface
      */
-    public function contactList(?int $contactList = null): FactoryInterface
+    public function contactList(?String $contactList = null): FactoryInterface
     {
         $this->post['ContactList'] = $contactList;
 
