@@ -16,7 +16,7 @@ interface RepositoryInterface
      * @param int|null $per_page
      * @return ResponseInterface
      */
-    public function listUptimeMonitors(?int $page = null, ?int $per_page = null): ResponseInterface;
+    public function listMonitors(?int $page = null, ?int $per_page = null): ResponseInterface;
 
     /**
      * @param String $id

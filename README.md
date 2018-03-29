@@ -132,6 +132,8 @@ create();
 patch();
 delete();
 target(String $target);
+listMonitors(?int $page = null, ?int $per_page = null);
+listContacts();
 
 // FACTORY: Uptime Monitoring Methods
 id(String $id);
@@ -160,16 +162,13 @@ smtpPass(String $pass);
 
 // REPOSITORY: Uptime Monitoring Methods
 status();
-listUptimeMonitors(?int $page = null, ?int $per_page = null);
 uptimeReport(String $id);
-listContacts();
 
 // FACTORY: Blacklist Monitoring Methods
 label(String $label);
 contact(int $contact);
 
 // REPOSITORY: Blacklist Monitoring Methods
-listMonitors(?int $page = null, ?int $per_page = null);
 blacklistReport(String $target, ?String $date = null);
 manualCheck(String $target);
 ```
