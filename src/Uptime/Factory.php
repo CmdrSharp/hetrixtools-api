@@ -35,7 +35,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function create(): ResponseInterface
     {
-        return AbstractApi::request($this->apiKey, 'uptime/add/', $this->post);
+        return AbstractApi::post($this->apiKey, 'uptime/add/', $this->post);
     }
 
     /**
@@ -46,7 +46,7 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function patch(): ResponseInterface
     {
-        return AbstractApi::request($this->apiKey, 'uptime/edit/', $this->post);
+        return AbstractApi::post($this->apiKey, 'uptime/edit/', $this->post);
     }
 
     /**
@@ -57,7 +57,25 @@ class Factory extends AbstractApi implements FactoryInterface
      */
     public function delete(): ResponseInterface
     {
-        return AbstractApi::request($this->apiKey, 'uptime/delete/', $this->post);
+        return AbstractApi::post($this->apiKey, 'uptime/delete/', $this->post);
+    }
+
+    /**
+     * Put an Uptime Monitor into maintenance mode.
+     *
+     * @param String $monitor_id
+     * @param int $maintenance_mode
+     * @return mixed
+     * @throws \InvalidArgumentException
+     * @throws \ErrorException
+     */
+    public function maintenance(String $monitor_id, int $maintenance_mode)
+    {
+        if ($maintenance_mode < 1 || $maintenance_mode > 3) {
+            throw new \InvalidArgumentException('Maintenance mode must be between 1 and 3');
+        }
+
+        return AbstractApi::get($this->apikey, 'maintenance/' . $monitor_id . '/' . $maintenance_mode . '/');
     }
 
     /**
