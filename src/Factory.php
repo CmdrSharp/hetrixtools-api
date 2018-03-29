@@ -59,7 +59,10 @@ class Factory implements FactoryInterface
 
         if ($this->validateResponse($response)) {
             return $response;
+        } else {
+            throw new \ErrorException('An error has occurred: The response was likely not of the expected type.');
         }
+
     }
 
     /**
@@ -498,12 +501,8 @@ class Factory implements FactoryInterface
      */
     private function validateResponseContents(\stdClass $response)
     {
-        if (!$response) {
-            throw new \ErrorException('Remote API Procedure failed. Cause: Unknown');
-        }
-
         if (!isset($response->status) || $response->status === 'ERROR') {
-            $message = isset($response_body->error_message) ? $response->error_message : 'Unknown';
+            $message = isset($response->error_message) ? $response->error_message : 'Unknown';
             throw new \ErrorException('Remote API Procedure failed. Cause: ' . $message);
         }
 
