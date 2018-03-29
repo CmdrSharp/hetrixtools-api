@@ -33,12 +33,12 @@ class Repository extends AbstractApi implements RepositoryInterface
     {
         $uri = 'blacklist/monitors/';
 
-        if ($page !== null) {
-            $uri .= $page . '/';
+        if ($page === null) {
+            $uri .= '0/';
         }
 
-        if ($per_page !== null) {
-            $uri .= $per_page . '/';
+        if ($per_page === null) {
+            $uri .= '100/';
         }
 
         return AbstractApi::get($this->apiKey, 'v2', $uri);
@@ -58,7 +58,7 @@ class Repository extends AbstractApi implements RepositoryInterface
 
         $uri = 'blacklist/report/' . $target . '/';
 
-        if ($date !== null && !$this->isValidDate($date)) {
+        if ($date !== null) {
             if (!$this->isValidDate($date)) {
                 throw new \InvalidArgumentException('The date specified must be a valid YYYY-MM-DD format');
             }
