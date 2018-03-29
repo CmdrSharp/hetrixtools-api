@@ -4,7 +4,7 @@
 [![StyleCI](https://styleci.io/repos/127169208/shield?branch=master)](https://styleci.io/repos/127169208)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-This is an API for HetrixTools V2 API, aiming to make dealing with creating/updating and deleting monitors easier and more fluent.
+This is an API for HetrixTools V2 API, aiming to make dealing with creating/updating/deleting/fetching Uptime and RBL Monitors easier and more fluent.
 
 # Requirements
 * PHP 7.1 or higher
@@ -16,11 +16,12 @@ $ composer require cmdrsharp/hetrixtools-api
 ```
 
 # Usage
-Include the factory, then spawn up an instance of the class, supplying your API Key as the only argument. Finally, build out your request.
+Include the `factory` or `repository` that you need (either Uptime or Blacklist), then spawn up an instance of the class, supplying your API Key as the only argument. Finally, build out your request.
+A full list of available methods for both the factories and repositories are available further down in this readme.
 ```php
-use CmdrSharp\HetrixtoolsApi\Factory as HetrixTools;
+// Example Uptime Monitor creation (adding a ping monitor to 8.8.8.8)
+use CmdrSharp\HetrixtoolsApi\Uptime\Factory as HetrixTools;
 
-// Example monitor creation (adding a ping monitor to 8.8.8.8):
 $monitor = new HetrixTools('myApiKey');
 
 try {
@@ -36,21 +37,59 @@ try {
 	        'dal' => true,
 	        'msw' => true,
 	        'nyc' => true
-	    ])->call('POST');
+	    ])->create();
+} catch(\Exception $e) {
+	print($e->getMessage());
+}
+
+// Example Blacklist Monitor creation (adding a monitor to 192.168.0.0/24)
+use CmdrSharp\HetrixtoolsApi\Blacklist\Factory as HetrixTools;
+
+$monitor = new HetrixTools('myApiKey');
+
+try {
+	$result = $monitor->target('192.168.0.0/24')
+	    ->label('Blacklist Monitor 1')
+	    ->contact(1)
+	    ->create();
+} catch(\Exception $e) {
+	print($e->getMessage());
+}
+
+// Example Listing Uptime Monitors
+use CmdrSharp\HetrixtoolsApi\Uptime\Repository as HetrixTools;
+
+$instance = new HetrixTools('myApiKey');
+
+try {
+	$result = $instance->listUptimeMonitors(); // Fetches all
+	$result = $instance->listUptimeMonitors(1, 500); // Page 1, 500 results per page.
+} catch(\Exception $e) {
+	print($e->getMessage());
+}
+
+// Example Blacklist Report
+use CmdrSharp\HetrixtoolsApi\Blacklist\Repository as HetrixTools;
+
+$instance = new HetrixTools('myApiKey');
+
+try {
+	$result = $instance->blacklistReport('8.8.8.8');
+	$result = $instance->blacklistReport('8.8.8.8', '2018-03-29');
 } catch(\Exception $e) {
 	print($e->getMessage());
 }
 ```
 
 The client returns a normal PSR ResponseInterface. This means you interact with the response as you would with any Guzzle response.
-It is advisable that you ensure you received a "SUCCESS" status in the response before assuming the monitor was added. Saving the monitor_id is also recommended to allow modifications to it in the future.
 ```php
 $result->getStatusCode(); // 200
 $result->getBody(); // {"status":"SUCCESS","monitor_id":"exampleMonitorId","action":"added"}
 ```
 
-Now that we have created a monitor, we may want to modify it. This is almost identical to the regular POST request. The ID field is however now required. Add other methods depending on what it is you want to change. A few examples are shown below.
+Now that we have created a monitor, we may want to modify it. This is almost identical to the regular request. For Uptime Monitors, the ID field must be supplied. For Blacklist Monitors, the Target field is required. Apart from that, include what you want to change.
 ```php
+// Example for modifying Uptime Monitors
 try {
 	// Changing the target, category and locations
 	$result = $monitor->id('exampleMonitorId')
@@ -61,27 +100,43 @@ try {
 	        'msw' => true,
 	        'nyc' => true,
 	        'mos' => true
-	    ])->call('PATCH');
+	    ])->patch();
 
 	// Changing the name only.
 	$result = $monitor->id('exampleMonitorId')
 		->name('New awesome monitor')
-		->call('PATCH');
+		->patch();
 
+} catch(\Exception $e) {
+	print($e->getMessage());
+}
+
+// Example for modifying Blacklist Monitors
+try {
+	$result = $monitor->target('192.168.0.0/24')
+	    ->label('Blacklist Monitor 113')
+	    ->contact(5)
+	    ->patch();
 } catch(\Exception $e) {
 	print($e->getMessage());
 }
 ```
 
-The `call` method should always be at the end of the procedure call. It accepts `POST` for adding a monitor, `PATCH` for changing a monitor, and `DELETE` for removing a monitor. All methods can be chained together. Some parameters are optional, and which ones are required will differ depending on what type of monitor you're creating. For a full overview of this, review the [HetrixTools API Documentation](https://gist.github.com/hetrixtools/3789e032af9224be2cdf49e557a7d484).
+The `CREATE`, `PATCH` and `DELETE` methods should always be at the end of the procedure call. All methods can be chained together. Some parameters are optional, and which ones are required will differ depending on what type of monitor you're creating. For a full overview of this, review the [HetrixTools API Documentation](https://gist.github.com/hetrixtools/3789e032af9224be2cdf49e557a7d484).
 
 # Available methods
 ```php
-call(String $method);
+
+// Common Methods (for both Blacklist and Uptime)
+create();
+patch();
+delete();
+target(String $target);
+
+// FACTORY: Uptime Monitoring Methods
 id(String $id);
 type(String $type);
 name(String $name);
-target(String $target);
 timeout(int $timeout);
 frequency(int $frequency);
 failsBeforeAlert(int $fails);
@@ -102,6 +157,21 @@ port(int $port);
 checkAuth(bool $check);
 smtpUser(String $user);
 smtpPass(String $pass);
+
+// REPOSITORY: Uptime Monitoring Methods
+status();
+listUptimeMonitors(?int $page = null, ?int $per_page = null);
+uptimeReport(String $id);
+listContacts();
+
+// FACTORY: Blacklist Monitoring Methods
+label(String $label);
+contact(int $contact);
+
+// REPOSITORY: Blacklist Monitoring Methods
+listMonitors(?int $page = null, ?int $per_page = null);
+blacklistReport(String $target, ?String $date = null);
+manualCheck(String $target);
 ```
 
 # Errors
